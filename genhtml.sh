@@ -5,9 +5,13 @@ graphs=""
 
 for graphdir in "$@"
 do
+    while read ln
+    do
+      stats="$stats <p>$ln</p>"
+    done < $graphdir/stats
     for png in $graphdir/*.png
     do
-        graphs="$graphs <h3 style=\"text-align:center;margin:1px 0px;letter-spacing:2px;\">$graphdir</h3>\n<img src=\"$(realpath $png)\" style=\"max-width:100%;height:auto\">\n"
+        graphs="$graphs <h3 style=\"text-align:center;margin:1px 0px;letter-spacing:2px;\">$graphdir</h3>\n$stats\n<img src=\"$(realpath $png)\" style=\"max-width:100%;height:auto\">\n"
     done
 done
 echo -e "
