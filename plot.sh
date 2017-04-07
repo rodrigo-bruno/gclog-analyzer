@@ -2,6 +2,7 @@
 
 # TODO - test if args == 0
 
+home=$(dirname $0)
 output_dir=$1
 copy=$output_dir/totalcopy.log
 pauses=$output_dir/totalpauses.log
@@ -17,4 +18,6 @@ paste -d' ' $output_dir/totaltimes.log $copy > $tmp_copy
 paste -d' ' $output_dir/totaltimes.log $pauses > $tmp_pauses
 paste -d' ' $output_dir/totaltimes.log $rs > $tmp_rs
 
-gnuplot -e "copy='${tmp_copy}'; pauses='${tmp_pauses}'; rs='${tmp_rs}'; outputname='${output_dir}/gc-plot.png'" collections.gplot
+gnuplot -e "copy='${tmp_copy}'; pauses='${tmp_pauses}'; rs='${tmp_rs}'; outputname='${output_dir}/gc-plot.png'" $home/collections.gplot
+
+rm $tmp_copy $tmp_pauses $tmp_rs

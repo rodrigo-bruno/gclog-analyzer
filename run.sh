@@ -5,6 +5,9 @@ gc_log=cassandra-gc.log
 
 for input_dir in "$@"
 do
-	$home/process.sh $input_dir/$gc_log
+	echo "Processing $input_dir..."
+	echo "Stats for $input_dir" > $input_dir/stats
+	$home/process.sh $input_dir/$gc_log >> $input_dir/stats
 	$home/plot.sh $input_dir
+	echo "Processing $input_dir... Done"
 done
