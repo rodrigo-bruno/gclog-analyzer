@@ -1,0 +1,6 @@
+set terminal pngcairo enhanced color solid font 'Verdana,11' size 1000,300
+set output outputname
+
+plot pauses title 'Pause (ms)' with linespoints, \
+     copy title 'Copy (ms)' with linespoints, \
+     rs title 'Scan RS (ms)' with linespoints
