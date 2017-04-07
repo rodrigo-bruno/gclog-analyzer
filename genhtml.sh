@@ -11,7 +11,6 @@ do
         graphnames="$graphnames <h3 style=\"text-align:center;margin:1px 0px;letter-spacing:2px;\">$graphdir</h3>\n"
     done
 done
-echo -e $graphnames
 echo -e "
 <!DOCTYPE html>\n
 <html>\n

@@ -11,3 +11,4 @@ do
 	$home/plot.sh $input_dir
 	echo "Processing $input_dir... Done"
 done
+$home/genhtml.sh $@
