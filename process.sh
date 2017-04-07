@@ -8,7 +8,6 @@ LOCALE=C
 export LC_ALL=$LOCALE;
 
 # helper function for arithmetics
-calc() { awk "BEGIN{print $*}"; }
 f2i() { read data; printf "%.0f" $data; }
 
 # Extract collection stats
@@ -26,36 +25,56 @@ cat $output_dir/totalcopy.log | awk '\
 	{ print "Sum of copies (ms): " sum }'
 
 echo ""
+
 # Number of pauses and copy times per interval
-echo "Pause time distribution"
+echo "Pause time distribution (ms)"
+for pause in 0 25 50 100 250 500 750 1000
+do
+	echo -ne ">$pause\t"
+done
+echo ""
+
 for pause in 0 25 50 100 250 500 750 1000
 do
 	cat $output_dir/totalpauses.log | awk -v pause=$pause '\
 		BEGIN { sum=0} \
 		{ if ($1 > pause) sum+=1;} \
-		 END { print "pauses > " pause " ms = " sum }'
+		 END { printf "%d\t", sum }'
 done
-echo "Copy time distribution"
+echo -e "\n"
+
+echo "Copy time distribution (ms)"
+for pause in 0 25 50 100 250 500 750 1000
+do
+	echo -ne ">$pause\t"
+done
+echo ""
+
 for pause in 0 25 50 100 250 500 750 1000
 do
 	cat $output_dir/totalcopy.log | awk -v pause=$pause '\
 		BEGIN { sum=0} \
 		{ if ($1 > pause) sum+=1;} \
-		 END { print "copies > " pause " ms = " sum }'
+		 END { printf "%d\t", sum }'
 done
 
 for file in totalpauses.log totalcopy.log
 do
-	echo "Percentiles for $file"
+	echo -e "\n\nPercentiles for $file"
+	for percentile in 50 75 90 95 99 "99.9" "99.99" "99.999" 100
+	do
+		echo -ne "$percentile\t"
+	done
+
+	echo ""
+
 	for percentile in 50 75 90 95 99 "99.9" "99.99" "99.999" 100
 	do
 		tmp="$(mktemp)"
 		total=$(cat $output_dir/$file | sort -n | tee "$tmp" | wc -l)
-		# Note 1: (n + 99) / 100 with integers is effectively ceil(n/100) with floats
-		# Note 2: we use percentile * 1000 because bash arithmetics do not support floats
+		# Note 1: we use percentile * 1000 because bash arithmetics do not support floats
                 count=`echo "(($total * $percentile) / 100)" | { cat; echo;} | bc -l | f2i`
-                # count=$(((total * percentile + 99) / 100))
 		res="$(head -n $count "$tmp" | tail -n 1)"
-	        echo "$(calc $percentile)th $res"
+	        echo -ne "$res\t"
 	done
 done
