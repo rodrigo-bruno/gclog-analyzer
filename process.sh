@@ -78,3 +78,4 @@ do
 	        echo -ne "$res\t"
 	done
 done
+echo ""

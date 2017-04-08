@@ -1,14 +1,11 @@
 #!/bin/bash
 
-target=$(dirname $0)/index.html
-graphs=""
-
 for graphdir in "$@"
 do
     stats=""
     while read ln
     do
-      stats="$stats <p>$ln</p>"
+      stats="$stats\n<p>$ln</p>"
     done < $graphdir/stats
     for png in $graphdir/*.png
     do
@@ -30,4 +27,4 @@ echo -e "
    $graphs
   </div>\n\
  </body>\n\
-</html>" > $target
+</html>" > index.html
