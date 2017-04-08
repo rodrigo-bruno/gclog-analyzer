@@ -5,6 +5,7 @@ graphs=""
 
 for graphdir in "$@"
 do
+    stats=""
     while read ln
     do
       stats="$stats <p>$ln</p>"
