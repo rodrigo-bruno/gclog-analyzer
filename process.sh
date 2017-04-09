@@ -15,6 +15,7 @@ cat $log | awk '/GC pause/ {print $(NF-1)*1000}' > $output_dir/totalpauses.log
 cat $log | awk '/Object Copy/ {print $(NF)}' | sed 's/]//' > $output_dir/totalcopy.log
 cat $log | awk '/Scan RS/ {print $(NF)}' | sed 's/]//' > $output_dir/totalrs.log
 cat $log | awk '/GC pause/ {print $2}' | sed 's/://' > $output_dir/totaltimes.log
+cat $log | grep -v "Metaspace" | awk '/Heap:/ {print $6}' | sed 's/[\(\)\>]/ /g' | awk '{print $4}' > $output_dir/totalheap.log
 
 # Total pause time and total copy time
 cat $output_dir/totalpauses.log | awk '\
