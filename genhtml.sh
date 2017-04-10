@@ -22,6 +22,11 @@ do
 		</div></div>"
     done
 done
+
+shared="<img src=\"pauses.png\" style=\"max-width:100%;height:auto\">\n"
+shared="$shared <img src=\"copies.png\" style=\"max-width:100%;height:auto\">\n"
+shared="$shared <img src=\"rs.png\" style=\"max-width:100%;height:auto\">\n"
+
 echo -e "
 <!DOCTYPE html>\n
 <html>\n
@@ -35,6 +40,7 @@ echo -e "
  <body>\n\
   <div>\n\
    <h3 style=\"text-align:center;letter-spacing:2px;\">Generated Plots</h3>\n
+   $shared
    $graphs
   </div>\n\
  </body>\n\

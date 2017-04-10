@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Syntax: run.sh <gc log name> <folder1> ...<folderN>
+
 home=$(dirname $0)
 gc_log="$1"
 shift
@@ -12,6 +14,7 @@ do
     $home/plot.sh $input_dir
     echo "Processing $input_dir... Done"
 done
+$home/plot-shared.sh "$@"
 $home/genhtml.sh "$@"
 
 exit $?

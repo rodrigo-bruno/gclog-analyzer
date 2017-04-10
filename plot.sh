@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO - test if args == 0
+# Syntax: plot.sh <folder>
 
 home=$(dirname $0)
 output_dir=$1
@@ -9,15 +9,13 @@ pauses=$output_dir/totalpauses.log
 rs=$output_dir/totalrs.log
 
 # Create temporary files
-tmp_copy="$(mktemp)"
-tmp_pauses="$(mktemp)"
-tmp_rs="$(mktemp)"
+timecopy=$output_dir/timecopy.log
+timepauses=$output_dir/timepauses.log
+timers=$output_dir/timers.log
 
 # Add time collumn to copy, pauses, rs files.
-paste -d' ' $output_dir/totaltimes.log $copy > $tmp_copy
-paste -d' ' $output_dir/totaltimes.log $pauses > $tmp_pauses
-paste -d' ' $output_dir/totaltimes.log $rs > $tmp_rs
+paste -d' ' $output_dir/totaltimes.log $copy > $timecopy
+paste -d' ' $output_dir/totaltimes.log $pauses > $timepauses
+paste -d' ' $output_dir/totaltimes.log $rs > $timers
 
-gnuplot -e "copy='${tmp_copy}'; pauses='${tmp_pauses}'; rs='${tmp_rs}'; outputname='${output_dir}/gc-plot.png'" $home/collections.gplot
-
-rm $tmp_copy $tmp_pauses $tmp_rs
+gnuplot -e "copy='${timecopy}'; pauses='${timepauses}'; rs='${timers}'; outputname='${output_dir}/gc-plot.png'" $home/collections.gplot
