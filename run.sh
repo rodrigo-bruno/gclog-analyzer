@@ -1,12 +1,17 @@
 #!/bin/bash
 
-# Syntax: run.sh <gc log name> <folder1> ...<folderN>
+if [ "$#" -lt 4 ]; then
+    echo "Illegal number of parameters"
+    echo "Syntax: run.sh <start time> <end time> <gc log name> <folder1> ...<folderN>"
+    exit
+fi
 
 home=$(dirname $0)
-start=200
-finish=800
-
-gc_log="$1"
+start=$1
+finish=$2
+gc_log="$3"
+shift
+shift
 shift
 
 for input_dir in "$@"

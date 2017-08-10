@@ -10,8 +10,9 @@ export LC_ALL=$LOCALE;
 # helper function for arithmetics
 f2i() { read data; printf "%.0f" $data; }
 
+echo "Using log $log"
 # Extract collection stats
-cat $log | awk '/GC pause/ {print $(NF-1)*1000}' > $output_dir/totalpauses.log
+cat $log | awk '/GC pause/ {print $(NF-1)}' | sed 's/,/./g' | awk '{ print $1 * 1000; }' > $output_dir/totalpauses.log
 cat $log | awk '/Object Copy/ {print $(NF)}' | sed 's/]//' > $output_dir/totalcopy.log
 cat $log | awk '/Scan RS/ {print $(NF)}' | sed 's/]//' > $output_dir/totalrs.log
 cat $log | awk '/GC pause/ {print $2}' | sed 's/://' > $output_dir/totaltimes.log
@@ -27,7 +28,7 @@ cat $output_dir/totalcopy.log | awk '\
 
 echo ""
 
-# Number of pauses and copy times per interval
+# Distribution of pausetimes and copytimes
 echo "Pause time distribution (ms)"
 for pause in 0 25 50 100 250 500 750 1000
 do
@@ -59,6 +60,7 @@ do
 		 END { printf "%d\t", sum }'
 done
 
+# Percentiles for pausetimes and copytimes
 for file in totalpauses.log totalcopy.log
 do
 	echo -e "\n\nPercentiles for $file"
